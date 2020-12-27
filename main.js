@@ -1,42 +1,42 @@
-difference = 0;
-rightWristX = 0;
-leftWristX = 0;
+song="";
+leftwristx=0;
+leftwristy=0;
+rightwritx=0;
+rightwrity=0;
 
-  function setup() {
-  video = createCapture(VIDEO);
-  video.size(550, 500);
-
-  canvas = createCanvas(550, 550);
-  canvas.position(560,150);
-
-  poseNet = ml5.poseNet(video, modelLoaded);
-  poseNet.on('pose', gotPoses);
+function preload(){
+ song=loadSound("music2.mp3");
 }
 
-function modelLoaded() {
-  console.log('PoseNet Is Initialized!');
+function setup(){
+ canvas=createCanvas(600,500);
+ canvas.center();
+ video=createCapture(VIDEO);
+ video.hide();
+ poseNet=ml5.poseNet(video,modelloaded);
+ poseNet.on('pose',gotposes);
 }
 
+function modelloaded(){
+  console.log("posenet is initilized");
+}
 
-function gotPoses(results)
-{
-  if(results.length > 0)
-  {
+function draw(){
+  image(video,0,0,600,500);
+}
+
+function play(){
+ song.play();
+ song.setVolume(1);
+ song.rate(1);
+}
+
+function gotposes(results){
+  if(results.length>0){
     console.log(results);
-
-    leftWristX = results[0].pose.leftWrist.x;
-    rightWristX = results[0].pose.rightWrist.x;
-    difference = floor(leftWristX - rightWristX);
-
-    console.log("leftWristX  = " + leftWristX  + " rightWristX = "+ rightWristX + " difference = " + difference);
+    rightwritx=results[0].pose.rightWrist.x;
+    rightwrity=results[0].pose.rightWrist.y;
+    leftwristx=results[0].pose.leftWrist.x;
+    leftwritsy=results[0].pose.leftWrist.y;
   }
-}
-
-function draw() {
-background('#6C91C2');
-
-  document.getElementById("font_size").innerHTML = "Font size of the text will be = " + difference +"px";
-textSize(difference);
-fill('#FFE787');
-text('Pratyaksh', 50, 400);
 }
